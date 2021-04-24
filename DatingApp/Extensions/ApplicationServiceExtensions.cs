@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +20,8 @@ namespace DatingApp.Extensions
         {
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseMySql(
-                    config.GetConnectionString("DbConnection"),
-                    new MySqlServerVersion(new Version(8, 0, 23)),
-                    mySqlOptions => mySqlOptions
-                            .CharSetBehavior(CharSetBehavior.NeverAppend)
-                    ).EnableDetailedErrors();
+                options.UseNpgsql(
+                    config.GetConnectionString("DbConnection"));
             });
 
             services.AddScoped<ITokenService, TokenService>();
